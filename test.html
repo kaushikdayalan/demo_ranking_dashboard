@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Fancy Instagram Ranking Dashboard (Dummy Data)</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+    <style>
+        .rank-col {
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .badge-eng {
+            font-size: 0.9em;
+        }
+
+        .sparkline {
+            display: inline-block;
+            width: 60px;
+            height: 20px;
+        }
+    </style>
+</head>
+
+<body class="p-4">
+    <h1 class="mb-4">📊 Fancy Instagram Ranking (Dummy Data)</h1>
+
+    <!-- Controls -->
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label for="topN" class="form-label">Show Top N</label>
+            <input type="number" id="topN" class="form-control" value="5" min="1" max="5" />
+        </div>
+        <div class="col-md-3">
+            <label for="rankBy" class="form-label">Rank by</label>
+            <select id="rankBy" class="form-select">
+                <option value="total_posts">Total Posts</option>
+                <option value="total_engagement" selected>Total Engagement</option>
+                <option value="avg_engagement_per_post">Avg Eng./Post</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <table id="dashTable" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th class="rank-col">🏅</th>
+                <th>Profile</th>
+                <th>Posts</th>
+                <th>Likes</th>
+                <th>Comments</th>
+                <th>Shares</th>
+                <th>Total Engagement</th>
+                <th>Eng. Level</th>
+                <th>Trend</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <!-- JS libs -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+
+    <script>
+        // --- Dummy data hard-coded here ---
+        const rawData = [
+            {
+                profile_name: "user_d",
+                total_posts: 15,
+                total_likes: 200,
+                total_comments: 40,
+                total_shares: 10,
+                total_engagement: 250,
+                avg_engagement_per_post: 250 / 15,
+                sparkline: [220, 230, 210, 240, 250, 245, 250]
+            },
+            {
+                profile_name: "user_b",
+                total_posts: 12,
+                total_likes: 150,
+                total_comments: 30,
+                total_shares: 8,
+                total_engagement: 188,
+                avg_engagement_per_post: 188 / 12,
+                sparkline: [170, 180, 160, 190, 185, 180, 188]
+            },
+            {
+                profile_name: "user_a",
+                total_posts: 10,
+                total_likes: 100,
+                total_comments: 20,
+                total_shares: 5,
+                total_engagement: 125,
+                avg_engagement_per_post: 125 / 10,
+                sparkline: [110, 115, 105, 120, 125, 130, 128]
+            },
+            {
+                profile_name: "user_e",
+                total_posts: 9,
+                total_likes: 95,
+                total_comments: 18,
+                total_shares: 6,
+                total_engagement: 119,
+                avg_engagement_per_post: 119 / 9,
+                sparkline: [100, 105, 110, 115, 120, 118, 119]
+            },
+            {
+                profile_name: "user_c",
+                total_posts: 8,
+                total_likes: 80,
+                total_comments: 15,
+                total_shares: 4,
+                total_engagement: 99,
+                avg_engagement_per_post: 99 / 8,
+                sparkline: [90, 95, 92, 98, 100, 101, 99]
+            }
+        ];
+
+        // Emoji medals for rank 1–3, number otherwise
+        function medalEmoji(rank) {
+            return rank === 1 ? '🥇'
+                : rank === 2 ? '🥈'
+                    : rank === 3 ? '🥉'
+                        : rank;
+        }
+
+        // Engagement level badges
+        function engagementBadge(val) {
+            if (val > 180) return `<span class="badge bg-success badge-eng" title="High">🟢 High</span>`;
+            if (val > 120) return `<span class="badge bg-warning badge-eng" title="Medium">🟡 Med</span>`;
+            return `<span class="badge bg-danger badge-eng" title="Low">🔴 Low</span>`;
+        }
+
+        function renderDashboard() {
+            const topN = +$('#topN').val();
+            const rankBy = $('#rankBy').val();
+
+            const sorted = rawData
+                .slice()
+                .sort((a, b) => b[rankBy] - a[rankBy])
+                .slice(0, topN);
+
+            // DataTable
+            $('#dashTable').DataTable({
+                destroy: true,
+                data: sorted,
+                columns: [
+                    {
+                        data: null,
+                        className: 'rank-col',
+                        render: (_, __, ___, meta) => medalEmoji(meta.row + 1)
+                    },
+                    { data: 'profile_name' },
+                    { data: 'total_posts' },
+                    { data: 'total_likes' },
+                    { data: 'total_comments' },
+                    { data: 'total_shares' },
+                    { data: 'total_engagement' },
+                    {
+                        data: 'total_engagement',
+                        render: engagementBadge
+                    },
+                    {
+                        data: 'sparkline',
+                        render: arr => `<span class="sparkline">${arr.join(',')}</span>`
+                    }
+                ],
+                paging: false,
+                searching: false,
+                info: false,
+                rowCallback: function (row, data) {
+                    // draw sparkline after row is created
+                    $(row)
+                        .find('.sparkline')
+                        .sparkline(data.sparkline, { type: 'bar', barWidth: 6, chartRangeMin: 0 });
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            renderDashboard();
+            $('#topN, #rankBy').on('change', renderDashboard);
+        });
+    </script>
+</body>
+
+</html>
