@@ -9,6 +9,12 @@ import altair as alt
 df = pd.read_csv("./notebooks/data/ranking_data/ranking_dataset.csv")
 
 
+st.set_page_config(
+    page_title="Instagram Ranking Dashboard",
+    layout="wide",  # <— this enables wide mode
+)
+
+
 # -------------------------------------------------------------------
 # 2) AUX FUNCTIONS
 # -------------------------------------------------------------------
