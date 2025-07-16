@@ -95,7 +95,7 @@ df_to_show.columns = [
 # -------------------------------------------------------------------
 col1, col2 = st.columns([1, 10])
 with col1:
-    st.image("./images/Bildschirmfoto 2025-07-15 um 09.11.17.png", width=50)
+    st.image("./images/Bildschirmfoto 2025-07-15 um 09.11.17.png", width=100)
 with col2:
     st.markdown("## 📊  E&V Schleswig-Holstein: Instagram Ranking")
 
