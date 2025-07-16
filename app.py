@@ -26,7 +26,7 @@ def engagement_badge(val: float) -> str:
     # simple thresholds
     if val > 1655.0:
         return "🟢"
-    if val > 1024.0:
+    if val > 1000.0:
         return "🟡"
     return "🔴"
 
