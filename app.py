@@ -24,9 +24,9 @@ def medal(rank: int) -> str:
 
 def engagement_badge(val: float) -> str:
     # simple thresholds
-    if val > 5508.0:
+    if val > 1655.0:
         return "🟢"
-    if val > 1858.0:
+    if val > 1024.0:
         return "🟡"
     return "🔴"
 
