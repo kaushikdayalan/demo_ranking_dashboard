@@ -101,4 +101,4 @@ with col2:
 
 st.markdown(f"Showing **Top {top_n}** by **{sort_by.replace('_',' ').title()}**")
 
-st.dataframe(df_to_show, use_container_width=True)
+st.dataframe(df_to_show.reset_index(drop=True), use_container_width=True,)
