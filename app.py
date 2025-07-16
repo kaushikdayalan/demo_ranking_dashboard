@@ -10,7 +10,7 @@ df = pd.read_csv("./notebooks/data/ranking_data/ranking_dataset.csv")
 
 
 st.set_page_config(
-    page_title="Instagram Ranking Dashboard",
+    page_title=" E&V Schleswig-Holstein: Instagram Ranking",
     layout="wide",  # <— this enables wide mode
 )
 
@@ -93,7 +93,12 @@ df_to_show.columns = [
 # -------------------------------------------------------------------
 # 5) RENDER
 # -------------------------------------------------------------------
-st.title("📊 Instagram Profiles Performance Ranking")
+col1, col2 = st.columns([1, 10])
+with col1:
+    st.image("./images/Bildschirmfoto 2025-07-15 um 09.11.17.png", width=50)
+with col2:
+    st.markdown("## 📊  E&V Schleswig-Holstein: Instagram Ranking")
+
 st.markdown(f"Showing **Top {top_n}** by **{sort_by.replace('_',' ').title()}**")
 
 st.dataframe(df_to_show, use_container_width=True)
