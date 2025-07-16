@@ -90,6 +90,8 @@ df_to_show.columns = [
     "7-day Trend",
 ]
 
+df_to_show = df_to_show.reset_index(drop=True)
+
 # -------------------------------------------------------------------
 # 5) RENDER
 # -------------------------------------------------------------------
@@ -101,4 +103,5 @@ with col2:
 
 st.markdown(f"Showing **Top {top_n}** by **{sort_by.replace('_',' ').title()}**")
 
-st.dataframe(df_to_show.reset_index(drop=True), use_container_width=True,)
+st.markdown(df_to_show.to_html(index=False), unsafe_allow_html=True)
+
