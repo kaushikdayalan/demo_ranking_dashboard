@@ -1,4 +1,6 @@
 # app.py
+import os
+import base64
 import streamlit as st
 import pandas as pd
 import altair as alt
@@ -77,6 +79,7 @@ df_to_show = df_ranked[
         "total_engagement",
         "Eng. Level",
         "trend",
+        "image_path"
     ]
 ]
 df_to_show.columns = [
@@ -88,9 +91,26 @@ df_to_show.columns = [
     "Engagement",
     "Level",
     "7-day Trend",
+    "image_path",
 ]
 
 df_to_show = df_to_show.reset_index(drop=True)
+
+def path_to_base64_img_tag(path, width=30):
+    if os.path.exists(path):
+        with open(path, "rb") as img_file:
+            encoded = base64.b64encode(img_file.read()).decode()
+            return f'<img src="data:image/png;base64,{encoded}" width="{width}" style="vertical-align:middle; border-radius:50%;">'
+    else:
+        return f'<div style="width:{width}px; height:{width}px; background:#eee; border-radius:50%;"></div>'
+
+# Apply base64 image embedding to the Profile column
+df_to_show["Profile"] = df_to_show.apply(
+    lambda row: f'{path_to_base64_img_tag(row["image_path"], width=30)}&nbsp;&nbsp;{row["Profile"]}',
+    axis=1
+)
+
+# Display table without index or raw image path
 
 # -------------------------------------------------------------------
 # 5) RENDER
@@ -103,5 +123,9 @@ with col2:
 
 st.markdown(f"Showing **Top {top_n}** by **{sort_by.replace('_',' ').title()}**")
 
-st.markdown(df_to_show.to_html(index=False), unsafe_allow_html=True)
+st.markdown(
+    df_to_show.drop(columns=["image_path"]).to_html(escape=False, index=False),
+    unsafe_allow_html=True
+)
+
 

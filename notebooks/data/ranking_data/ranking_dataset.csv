@@ -1,6 +1,5 @@
-profile_name,total_likes,total_comments,total_engagement,total_posts
-celinevenhofen.immobilien,4739.0,204,4943.0,162
-ekincemdurmaz.immobilien,1621.0,34,1655.0,49
-markushlubek.immobilien,982.0,42,1024.0,43
-immotraum_westkueste,149.0,4,153.0,15
-finanzexperten.im.norden,137.0,0,137.0,1
+profile_name,total_likes,total_comments,total_engagement,total_posts,image_path
+celinevenhofen.immobilien,4739.0,204,4943.0,162,images/celinevenhofen_immobilien.jpg
+ekincemdurmaz.immobilien,1621.0,34,1655.0,49,images/ekincemdurmaz_immobilien.jpg
+markushlubek.immobilien,982.0,42,1024.0,43,images/markushlubek_immobilien.jpg
+immotraum_westkueste,149.0,4,153.0,15,images/immotraum_westkueste.jpg
